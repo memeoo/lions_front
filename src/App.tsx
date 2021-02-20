@@ -1,15 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import AdminLogin from './screens/admin/login';
+import AdminMain from './screens/admin/main';
+import AddMember from './screens/admin/addMember';
+import {NotFound} from './screens/notfound';
 
 function App() {
   return (
-    <div className="App">
-      <body className="App-header">
-        <div>Lions Club</div>
-      </body>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/admin" component={AdminLogin} />
+        <Route path="/adminMain" component={AdminMain} />
+        {/* <Route path="/addMember" component={AddMember} /> */}
+        <Route component={NotFound} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
 export default App;
+  

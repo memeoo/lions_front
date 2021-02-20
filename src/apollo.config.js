@@ -1,0 +1,11 @@
+module.exports = {
+    client: {
+      includes: ["./src/**/*.{tsx,ts}"],
+      tagName: "gql",
+      service: {
+        name: "lions-back",
+        url: "http://localhost:4000/graphql",
+        skipSSLValidation: true
+      },
+    },
+  };

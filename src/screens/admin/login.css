@@ -1,0 +1,47 @@
+.top {
+    height: 70vh;
+    width: 60vw;
+}
+
+.login {
+    height: 15vh;
+    width: 70vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    /* align-items: center; */
+    padding-left: 1.5vw;
+    padding-top: 1vw;
+}
+
+.inputArea{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button{
+    height: 12vh;
+    width:  13vw;
+    
+}
+.wrapperBtn{
+    flex-direction: column;
+    height: 15vh;
+}
+.blank{
+    width: 3vw;
+}
+.blank2{
+    height: 0.45vh;
+}
+
+.textInput{
+    height: 10vh;
+    width:  40vw;
+}
+.btnText{
+    font-size: 3vh;
+}
+  
