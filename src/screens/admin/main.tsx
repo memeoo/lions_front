@@ -34,6 +34,7 @@ interface userDto {
     phoneNumWork: string;
     email: string;
     belongTo: string;
+    imgName:string;
 }
 
 function AdminMain(): any {
@@ -67,6 +68,9 @@ function AdminMain(): any {
         console.log(" selectedJigu > ", selectedJigu);
         setJigu(ev.target.value);
         setjiyeokList([]);
+        setjidaeList([]);
+        setClubList([]);
+        setUserList([]);
         axios.get(comm.SERVER_URL + "/group/jiyeok", {
             params: {
                 id: selectedJigu
@@ -81,7 +85,8 @@ function AdminMain(): any {
         setJiyeok(ev.target.value);
         let selectedJiyeok = ev.target.value;
         setjidaeList([]);
-
+        setClubList([]);
+        setUserList([]);
         axios.get(comm.SERVER_URL + "/group/jidae", {
             params: {
                 id: selectedJiyeok
@@ -96,7 +101,7 @@ function AdminMain(): any {
         setJidae(ev.target.value);
         let selectedJidae = ev.target.value;
         setClubList([]);
-
+        setUserList([]);
         axios.get(comm.SERVER_URL + "/group/club", {
             params: {
                 id: selectedJidae
@@ -250,13 +255,14 @@ function AdminMain(): any {
                 let address = each.address;
                 let mobileNum = each.mobileNum;
                 mobileNum ="H.P) "+mobileNum.substr(0,3)+"-"+mobileNum.substr(4,4)+"-"+mobileNum.substr(7,4);
-
-
+                // console.log(" imgUrl >> ", each.imgName);
+                let imgUrl = each.imgName === null ? logo : `https://clublions.s3.ap-northeast-2.amazonaws.com/${each.imgName}`;
+                console.log(" imgUrl >> ", imgUrl);
                 return (
                     <div>
                         <div className="flex flex-row items-center w-full mt-5">
                             <div>
-                                <img src={logo} alt="" className="w-20 h-20 ml-5 mr-7" />
+                                <img src={imgUrl} alt="" className="w-20 h-20 ml-5 mr-7" />
                             </div>
                             <div className="flex flex-col" onClick={(ev:any) => handleDetail(id)}>
                                 <div className="h-5 w-80">

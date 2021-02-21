@@ -41,13 +41,24 @@ const AddMember : React.FC<ChildProps> = (props :ChildProps) => {
             setValue("inputHome", res.data.phoneNumHome);
             setValue("inputBusiness", res.data.phoneNumWork);
             setValue("inputEmail", res.data.email);
+            if(props.memberId !== -1){
+                const imgUrl = `https://clublions.s3.ap-northeast-2.amazonaws.com/${res.data.imgName}`;
+                if(res.data.imgName){
+                    setMemberImg(imgUrl);
+                }else{
+                    setMemberImg(logo);
+                }
+            }
+
         })
 
     },[]);
 
     const onSubmit = (data: any) => {
-        console.log(" data => ", data);
         const {inputPic, inputName, inputPosition, inputMemberDate, inputJob, inputAddress, inputMobile, inputHome, inputBusiness,  inputEmail} = getValues();    
+        console.log(" inputPic => ", inputPic);
+        let imgName = inputPic[0].lastModified + inputPic[0].name;
+        console.log(" imgName => ", imgName);
         let dtoObj = {
             name: inputName,
             position: inputPosition, 
@@ -58,29 +69,18 @@ const AddMember : React.FC<ChildProps> = (props :ChildProps) => {
             phoneNumHome:inputHome,
             phoneNumWork:inputBusiness,
             email: inputEmail,
-            // belongTo: state.clubId,
             belongTo: props.club,
+            imgName: imgName
         }
+
         if(props.memberId === -1){
             //  AddMember
             axios.post(comm.SERVER_URL+"/member", dtoObj).then((res)=>{
-                console.log(" res >> ", res.data);
+                console.log(" add res >> ", res.data);
     
                 if(res.data.ok){
                     console.log(" Adding member to DB success !!");
-                    const actualFile = inputPic[0];
-                    const formBody = new FormData();
-                    formBody.append("file", actualFile);
-    
-                    axios.post(comm.SERVER_URL+"/member/upload",formBody).then((imgUpRes)=> {
-                        console.log(" Adding member to DB success !! => ", imgUpRes);
-                        if(imgUpRes.data.ok){
-                            console.log(" data.ok !! => ", imgUpRes.data);
-                        }
-                    })     
-                    // log in 성공
-                    // history.push("/adminMain");
-                    props.fire();
+                    uploadProfilePic(inputPic, imgName);
                 }
             });
         }else{
@@ -96,35 +96,36 @@ const AddMember : React.FC<ChildProps> = (props :ChildProps) => {
                 phoneNumHome:inputHome,
                 phoneNumWork:inputBusiness,
                 email: inputEmail,
-                // belongTo: state.clubId,
                 belongTo: props.club,
+                imgName: imgName
             }
-            
             axios.put(comm.SERVER_URL+"/member", dtoObj).then((res)=>{
-                console.log(" res >> ", res.data);
+                console.log(" update res >> ", res.data);
     
                 if(res.data.ok){
-                    console.log(" Adding member to DB success !!");
-                    const actualFile = inputPic[0];
-                    const formBody = new FormData();
-                    formBody.append("file", actualFile);
-    
-                    axios.post(comm.SERVER_URL+"/member/upload",formBody).then((imgUpRes)=> {
-                        console.log(" Adding member to DB success !! => ", imgUpRes);
-                        if(imgUpRes.data.ok){
-                            console.log(" data.ok !! => ", imgUpRes.data);
-                        }
-                    })     
-                    // log in 성공
-                    // history.push("/adminMain");
-                    props.fire();
+                    console.log(" Modify member to DB success !!");
+                    uploadProfilePic(inputPic, imgName);
                 }
             });
         }
-
-         
-
     };
+
+    const uploadProfilePic = (inputPic : Array<any>, imgName:string) => {
+        const actualFile = inputPic[0];
+        const formBody = new FormData();
+        formBody.append("file", actualFile);
+        formBody.append("imgName", imgName);
+
+        axios.post(comm.SERVER_URL+"/member/upload",formBody).then((imgUpRes)=> {
+            console.log(" Adding member to DB success !! => ", imgUpRes);
+            if(imgUpRes){
+                console.log(" data.ok !! => ", imgUpRes.data.url);
+            }
+        })     
+        // log in 성공
+        // history.push("/adminMain");
+        props.fire();
+    }
 
     const handlePositionChange = (ev: any) => {
         setPosition(ev.target.value);
@@ -203,7 +204,7 @@ const AddMember : React.FC<ChildProps> = (props :ChildProps) => {
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center h-32">
-                    <button type="submit" className="mr-8 rounded-xl border-blue-600 border-solid border-2 border-opacity-60 w-48 h-16 hover:bg-blue-200">회원 추가</button>
+                    <button type="submit" className="mr-8 rounded-xl border-blue-600 border-solid border-2 border-opacity-60 w-48 h-16 hover:bg-blue-200">{props.memberId === -1 ? "회원 추가" : "회원 수정" }</button>
                     <button type="button" className="ml-8 rounded-xl border-blue-600 border-solid border-2 border-opacity-60 w-48 h-16 hover:bg-red-200" onClick={props.fire}>취소</button>
                 </div>
             </form>
