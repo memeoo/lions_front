@@ -60,7 +60,6 @@ function AdminMain(): any {
             console.log("jiguRes => ", res.data);
             setjiguList(res.data);
         })
-
     }, []);
 
     const handleJiguChange = (ev: any) => {
@@ -119,7 +118,7 @@ function AdminMain(): any {
                 id: clubId
             }
         }).then(res => {
-            console.log(" res >> ", res.data);
+            console.log(" getUserList res >> ", res.data);
             setUserList(res.data);
         })
     };
@@ -142,16 +141,18 @@ function AdminMain(): any {
     };
 
     const DeleteWarningSnackBar = () => {
+
         const handleDeleteMember = () => {
             axios.delete(comm.SERVER_URL + "/member", {
                 params: {
                     id: deleteId
                 }
             }).then(res => {
-                console.log("res => ", res.data);
+                console.log("handleDeleteMember res => ", res.data);
+                setOpen(false);
                 getUserList(club);
             });
-            setOpen(false);
+           
         };
 
         const handleClose = () => {

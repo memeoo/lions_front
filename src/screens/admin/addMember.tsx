@@ -133,8 +133,13 @@ const AddMember : React.FC<ChildProps> = (props :ChildProps) => {
 
     const handleFileInputChange = (ev:any) => {
         let imageFile = ev.target.files[0];
+  
         console.log(" file >>> " , URL.createObjectURL(imageFile));
         setMemberImg(URL.createObjectURL(imageFile));
+    }
+
+    const handleOnBeforeInput = (ev:any) => {
+        console.log("handleOnBeforeInput");
     }
 
     const fileInputStyle = {
@@ -148,7 +153,7 @@ const AddMember : React.FC<ChildProps> = (props :ChildProps) => {
                     <div className="w- flex flex-col mr-10">  
                         <div className="flex flex-row items-center w-62 justify-between">
                             <span className="w-16">사진</span>
-                            <input type="file" ref={register} name="inputPic" id="inputPic" accept="image/*" style={fileInputStyle} onChange={handleFileInputChange} />
+                            <input type="file" ref={register} name="inputPic" id="inputPic" accept="image/*" style={fileInputStyle} onChange={handleFileInputChange} onSelect={handleOnBeforeInput} />
                         </div>
                         {/* <Img src={memberImg} className="w-64 h-64 mt-5"/> */}
                         <img src={memberImg} className="w-64 h-64 mt-5"/>
